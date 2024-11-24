@@ -16,58 +16,58 @@ uint8_t cImgCvtGrayDoubleToInt(double num) {
 
 int main() {
     /************************** TESTING based on specs **********************************/
-        int width1, height1;
+    int width1, height1;
 
-        scanf_s("%d %d", &height1, &width1);
+    scanf_s("%d %d", &height1, &width1);
 
-        double** array = (double**)malloc(height1 * sizeof(double*));
-        for (int i = 0; i < height1; i++) {
-            array[i] = (double*)malloc(width1 * sizeof(double));
+    double** array = (double**)malloc(height1 * sizeof(double*));
+    for (int i = 0; i < height1; i++) {
+        array[i] = (double*)malloc(width1 * sizeof(double));
+    }
+
+    uint8_t** resultArrayC = (uint8_t**)malloc(height1 * sizeof(uint8_t*));
+    uint8_t** resultArrayASM = (uint8_t**)malloc(height1 * sizeof(uint8_t*));
+    for (int i = 0; i < height1; i++) {
+        resultArrayC[i] = (uint8_t*)malloc(width1 * sizeof(uint8_t));
+        resultArrayASM[i] = (uint8_t*)malloc(width1 * sizeof(uint8_t));
+    }
+
+    for (int i = 0; i < height1; i++) {
+        for (int j = 0; j < width1; j++) {
+            scanf_s("%lf", &array[i][j]);
         }
+    }
 
-        uint8_t** resultArrayC = (uint8_t**)malloc(height1 * sizeof(uint8_t*));
-        uint8_t** resultArrayASM = (uint8_t**)malloc(height1 * sizeof(uint8_t*));
-        for (int i = 0; i < height1; i++) {
-            resultArrayC[i] = (uint8_t*)malloc(width1 * sizeof(uint8_t));
-            resultArrayASM[i] = (uint8_t*)malloc(width1 * sizeof(uint8_t));
+    for (int i = 0; i < height1; i++) {
+        for (int j = 0; j < width1; j++) {
+            resultArrayC[i][j] = cImgCvtGrayDoubleToInt(array[i][j]);
+            resultArrayASM[i][j] = asmImgCvtGrayDoubleToInt(array[i][j]);
         }
+    }
 
-        for (int i = 0; i < height1; i++) {
-            for (int j = 0; j < width1; j++) {
-                scanf_s("%lf", &array[i][j]);
-            }
+    printf("\nOriginal Array (Gray Double Floating Point):\n");
+    for (int i = 0; i < height1; i++) {
+        for (int j = 0; j < width1; j++) {
+            printf("%.2f\t", array[i][j]);
         }
+        printf("\n");
+    }
 
-        for (int i = 0; i < height1; i++) {
-            for (int j = 0; j < width1; j++) {
-                resultArrayC[i][j] = cImgCvtGrayDoubleToInt(array[i][j]);
-                resultArrayASM[i][j] = asmImgCvtGrayDoubleToInt(array[i][j]);
-            }
+    printf("\nProcessed Array[C] (Results in uint8):\n");
+    for (int i = 0; i < height1; i++) {
+        for (int j = 0; j < width1; j++) {
+            printf("%hhu\t", resultArrayC[i][j]);
         }
+        printf("\n");
+    }
 
-        printf("\nOriginal Array (Gray Double Floating Point):\n");
-        for (int i = 0; i < height1; i++) {
-            for (int j = 0; j < width1; j++) {
-                printf("%.2f\t", array[i][j]);
-            }
-            printf("\n");
+    printf("\nProcessed Array[ASM] (Results in uint8):\n");
+    for (int i = 0; i < height1; i++) {
+        for (int j = 0; j < width1; j++) {
+            printf("%hhu\t", resultArrayASM[i][j]);
         }
-
-        printf("\nProcessed Array[C] (Results in uint8):\n");
-        for (int i = 0; i < height1; i++) {
-            for (int j = 0; j < width1; j++) {
-                printf("%hhu\t", resultArrayC[i][j]);
-            }
-            printf("\n");
-        }
-
-        printf("\nProcessed Array[ASM] (Results in uint8):\n");
-        for (int i = 0; i < height1; i++) {
-            for (int j = 0; j < width1; j++) {
-                printf("%hhu\t", resultArrayASM[i][j]);
-            }
-            printf("\n");
-        }
+        printf("\n");
+    }
 
 
     /************************** EXECUTION TIME Computation *******************************/
@@ -78,7 +78,7 @@ int main() {
     double total_time_asm = 0.0;
     double total_time_c = 0.0;
 
-    
+
     double** arrayT = (double**)malloc(widthT * sizeof(double*));
     UINT8** resultArrayT_ASM = (UINT8**)malloc(widthT * sizeof(UINT8*));
     UINT8** resultArrayT_C = (UINT8**)malloc(widthT * sizeof(UINT8*));
@@ -136,7 +136,7 @@ int main() {
     printf("\nAverage Execution Time over %d runs using C function: %.6f seconds\n", runs, average_time_asm);
     double average_time_c = total_time_c / runs;
     printf("Average Execution Time over %d runs using X86-64 function: %.6f seconds\n", runs, average_time_c);
-    
+
     /*
     printf("\nOriginal Array (Random Doubles):\n");
     for (int i = 0; i < widthT; i++) {
@@ -161,8 +161,8 @@ int main() {
         }
         printf("\n");
     }
-    
-    
+
+
     for (int i = 0; i < widthT; i++) {
         free(arrayT[i]);
         free(resultArrayT_ASM[i]);
