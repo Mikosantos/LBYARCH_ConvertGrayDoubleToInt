@@ -1,5 +1,5 @@
 section .data
-var1 dq 255.000000000
+var1 dq 255.0
 
 section .text
 bits 64
