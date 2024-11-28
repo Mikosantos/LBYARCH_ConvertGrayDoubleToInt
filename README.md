@@ -38,19 +38,19 @@ For each kernel version, the values for n (image dimensions) are [10, 10] , [100
 
 Debug Version
 
-Figure 04. Debug Version 2^20 Execution Times Across Iterations Line Chart
+Figure 04. Debug Version 100*100 Execution Times Across Iterations Line Chart
 
-Figure 05. Debug Version  2^25 Execution Times Across Iterations Line Chart
+Figure 05. Debug Version 1000*1000 Execution Times Across Iterations Line Chart
 
-Figure 06. Debug Version  2^30 Execution Times Across Iterations Line Chart
+Figure 06. Debug Version 10000*10000 Execution Times Across Iterations Line Chart
 
 Release Version
 
-Figure 07. Debug Version 2^20 Execution Times Across Iterations Line Chart
+Figure 07. Debug Version 100*100 Execution Times Across Iterations Line Chart
 
-Figure 08. Debug Version  2^25 Execution Times Across Iterations Line Chart
+Figure 08. Debug Version 1000*1000 Execution Times Across Iterations Line Chart
 
-Figure 09. Debug Version  2^30 Execution Times Across Iterations Line Chart
+Figure 09. Debug Version 10000*10000 Execution Times Across Iterations Line Chart
 
 Average Execution Time
 
