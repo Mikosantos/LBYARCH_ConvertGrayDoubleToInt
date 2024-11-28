@@ -46,26 +46,21 @@ void run() {
         }
     }
 
-    printf("\nOriginal Array (Gray Double Floating Point):\n");
+    printf("\n[C] (Results in uint8):\n");
     for (int i = 0; i < height1; i++) {
         for (int j = 0; j < width1; j++) {
-            printf("%.2f\t", array[i][j]);
+            if (i==0 & j == 0)  printf("%hhu", resultArrayC[i][j]);
+            else printf(", %hhu", resultArrayC[i][j]);
         }
         printf("\n");
     }
 
-    printf("\nProcessed Array[C] (Results in uint8):\n");
+    printf("\n[ASM] (Results in uint8):\n");
     for (int i = 0; i < height1; i++) {
         for (int j = 0; j < width1; j++) {
-            printf("%hhu\t", resultArrayC[i][j]);
-        }
-        printf("\n");
-    }
+            if (i == 0 & j == 0)  printf("%hhu", resultArrayASM[i][j]);
+            else printf(", %hhu", resultArrayC[i][j]);
 
-    printf("\nProcessed Array[ASM] (Results in uint8):\n");
-    for (int i = 0; i < height1; i++) {
-        for (int j = 0; j < width1; j++) {
-            printf("%hhu\t", resultArrayASM[i][j]);
         }
         printf("\n");
     }
@@ -166,15 +161,13 @@ int main() {
     run();
     printf("\nWould you like to get the average run time for C and x86-64? (Y/N)? "); 
     scanf_s(" %c", &ans);
-    if (ans == 'Y' || 'y') {
+    if (ans == 'Y' || ans == 'y') {
         printf("Input number of width of the image: ");
         scanf_s("%d", &width);
         printf("Input number of height of the image: ");
         scanf_s("%d", &height);
         average_time(width, height);
     }
-    else {
-        printf("\nThank you!");
-    }
     return 0;
+
 }
