@@ -5,17 +5,18 @@
 #include <math.h>
 #include <stdint.h>
 
-// External assembly function
 extern uint8_t asmImgCvtGrayDoubleToInt(double num);
+void run();
+void average_time(int w, int h);
 
 uint8_t cImgCvtGrayDoubleToInt(double num) {
     double scaled = num * 255.0;
-    int rounded_result = (int)lround(scaled);
+    int rounded_result = (int)nearbyint(scaled);
     return (uint8_t)rounded_result;
 }
 
-int main() {
-    /************************** TESTING based on specs **********************************/
+/************************** TESTING based on specs **********************************/
+void run() {
     int width1, height1;
 
     scanf_s("%d %d", &height1, &width1);
@@ -68,16 +69,17 @@ int main() {
         }
         printf("\n");
     }
+}
 
+/************************** Average Time Computation **********************************/
+void average_time(int w, int h) {
+    printf("\n\n*******Average Time Computation*******\n");
 
-    /************************** EXECUTION TIME Computation *******************************/
-   /*
-    int widthT = 1000;
-    int heightT =1000;
+    int widthT = w;
+    int heightT = h;
     int runs = 50;
     double total_time_asm = 0.0;
     double total_time_c = 0.0;
-
 
     double** arrayT = (double**)malloc(widthT * sizeof(double*));
     UINT8** resultArrayT_ASM = (UINT8**)malloc(widthT * sizeof(UINT8*));
@@ -86,22 +88,29 @@ int main() {
     for (int i = 0; i < widthT; i++) {
         arrayT[i] = (double*)malloc(heightT * sizeof(double));
         resultArrayT_ASM[i] = (UINT8*)malloc(heightT * sizeof(UINT8));
-        resultArrayT_C[i] = (UINT8*)malloc(heightT * sizeof(UINT8*));
-
+        resultArrayT_C[i] = (UINT8*)malloc(heightT * sizeof(UINT8));
     }
 
-    srand(time(NULL));    //random number generator
+    srand(time(NULL));  
 
     for (int i = 0; i < widthT; i++) {
         for (int j = 0; j < heightT; j++) {
-            arrayT[i][j] = (double)rand() / RAND_MAX; // Random double values from 0 to 1
+            arrayT[i][j] = (double)rand() / RAND_MAX;  
         }
     }
+
+    printf("Starting performance measurement for %d runs...\n", runs);
+
+    FILE* file = fopen("execution_times.csv", "w");
+    if (!file) {
+        perror("Error opening file");
+        return 1;
+    }
+    fprintf(file, "Run,Time_ASM,Time_C\n");
 
     for (int r = 0; r < runs; r++) {
         clock_t start_time = clock();
 
-        // Apply the assembly function to each element
         for (int i = 0; i < widthT; i++) {
             for (int j = 0; j < heightT; j++) {
                 resultArrayT_ASM[i][j] = asmImgCvtGrayDoubleToInt(arrayT[i][j]);
@@ -112,56 +121,34 @@ int main() {
         double time_taken_asm = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
         total_time_asm += time_taken_asm;
 
-        printf("ASM Run %d Execution Time: %.6f seconds\n", r + 1, time_taken_asm);
-    }
-    printf("\n\n");
-    for (int r = 0; r < runs; r++) {
-        clock_t start_time = clock();
+        printf("Run %d: Assembly function execution time = %.6f seconds\n", r + 1, time_taken_asm);
 
-        // Apply the c function to each element
+        start_time = clock();
+
         for (int i = 0; i < widthT; i++) {
             for (int j = 0; j < heightT; j++) {
                 resultArrayT_C[i][j] = cImgCvtGrayDoubleToInt(arrayT[i][j]);
             }
         }
 
-        clock_t end_time = clock();
+        end_time = clock();
         double time_taken_c = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
         total_time_c += time_taken_c;
 
-        printf("C Run %d Execution Time: %.6f seconds\n", r + 1, time_taken_c);
+        printf("Run %d: C function execution time = %.6f seconds\n", r + 1, time_taken_c);
+
+        fprintf(file, "%d,%.6f,%.6f\n", r + 1, time_taken_asm, time_taken_c);
     }
+
+    fclose(file);
+    printf("\nExecution times have been written to 'execution_times.csv'.\n");
 
     double average_time_asm = total_time_asm / runs;
-    printf("\nAverage Execution Time over %d runs using C function: %.6f seconds\n", runs, average_time_asm);
     double average_time_c = total_time_c / runs;
-    printf("Average Execution Time over %d runs using X86-64 function: %.6f seconds\n", runs, average_time_c);
 
-    /*
-    printf("\nOriginal Array (Random Doubles):\n");
-    for (int i = 0; i < widthT; i++) {
-        for (int j = 0; j < heightT; j++) {
-            printf("%.2f \t", arrayT[i][j]);
-        }
-        printf("\n");
-    }
-
-    printf("\nUINT8 Converted  Array (ASM):\n");
-    for (int i = 0; i < widthT; i++) {
-        for (int j = 0; j < heightT; j++) {
-            printf("%hhu \t", resultArrayT_ASM[i][j]);
-        }
-        printf("\n");
-    }
-
-    printf("\nUINT8 Converted  Array (C):\n");
-    for (int i = 0; i < widthT; i++) {
-        for (int j = 0; j < heightT; j++) {
-            printf("%hhu \t", resultArrayT_C[i][j]);
-        }
-        printf("\n");
-    }
-
+    printf("\nSummary:\n");
+    printf("Average Assembly execution time: %.6f seconds\n", average_time_asm);
+    printf("Average C execution time: %.6f seconds\n", average_time_c);
 
     for (int i = 0; i < widthT; i++) {
         free(arrayT[i]);
@@ -171,6 +158,23 @@ int main() {
     free(arrayT);
     free(resultArrayT_ASM);
     free(resultArrayT_C);
-    */
+
+}
+int main() {
+    char ans;
+    int width, height;
+    run();
+    printf("\nWould you like to get the average run time for C and x86-64? (Y/N)? "); 
+    scanf_s(" %c", &ans);
+    if (ans == 'Y' || 'y') {
+        printf("Input number of width of the image: ");
+        scanf_s("%d", &width);
+        printf("Input number of height of the image: ");
+        scanf_s("%d", &height);
+        average_time(width, height);
+    }
+    else {
+        printf("\nThank you!");
+    }
     return 0;
 }
