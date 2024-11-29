@@ -25,7 +25,7 @@ def plot_execution_times(file_path):
 
     plt.xlabel("Run Number")
     plt.ylabel("Execution Time (seconds)")
-    plt.title("Execution Time Comparison (ASM vs C)")
+    plt.title("Execution Time Comparison (x86 vs C)")
     plt.xticks(x, runs) 
     plt.ylim(0.00)  
     plt.legend()
