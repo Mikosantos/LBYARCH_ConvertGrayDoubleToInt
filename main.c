@@ -49,9 +49,12 @@ void run() {
     printf("\n[C] (Results in uint8):\n");
     for (int i = 0; i < height1; i++) {
         for (int j = 0; j < width1; j++) {
-            if (i==0 & j == 0)  printf("%hhu", resultArrayC[i][j]);
-            else printf(", %hhu", resultArrayC[i][j]);
+            if (i == 0 && j == 0)
+                printf("%hhu", resultArrayC[i][j]);
+            else
+                printf(", %hhu", resultArrayC[i][j]);
         }
+
         printf("\n");
     }
 
@@ -72,36 +75,50 @@ void average_time(int w, int h) {
 
     int widthT = w;
     int heightT = h;
-    int runs = 50;
+    int runs = 30;
     double total_time_asm = 0.0;
     double total_time_c = 0.0;
 
+    // Allocate memory
     double** arrayT = (double**)malloc(widthT * sizeof(double*));
     UINT8** resultArrayT_ASM = (UINT8**)malloc(widthT * sizeof(UINT8*));
     UINT8** resultArrayT_C = (UINT8**)malloc(widthT * sizeof(UINT8*));
+
+    if (!arrayT || !resultArrayT_ASM || !resultArrayT_C) {
+        perror("Memory allocation failed");
+        free(arrayT);
+        free(resultArrayT_ASM);
+        free(resultArrayT_C);
+        return; // Exit on memory allocation error
+    }
 
     for (int i = 0; i < widthT; i++) {
         arrayT[i] = (double*)malloc(heightT * sizeof(double));
         resultArrayT_ASM[i] = (UINT8*)malloc(heightT * sizeof(UINT8));
         resultArrayT_C[i] = (UINT8*)malloc(heightT * sizeof(UINT8));
+
+        if (!arrayT[i] || !resultArrayT_ASM[i] || !resultArrayT_C[i]) {
+            perror("Memory allocation failed");
+            return; // Cleanup required
+        }
     }
 
-    srand(time(NULL));  
+    srand(time(NULL));
 
     for (int i = 0; i < widthT; i++) {
         for (int j = 0; j < heightT; j++) {
-            arrayT[i][j] = (double)rand() / RAND_MAX;  
+            arrayT[i][j] = (double)rand() / RAND_MAX;
         }
     }
 
     printf("Starting performance measurement for %d runs...\n", runs);
 
-    FILE* file = fopen("execution_times.csv", "w");
-    if (!file) {
-        perror("Error opening file");
-        return 1;
+    FILE* exec_file = fopen("execution_times.csv", "w");
+    if (!exec_file) {
+        perror("Error opening execution times file");
+        return;
     }
-    fprintf(file, "Run,Time_ASM,Time_C\n");
+    fprintf(exec_file, "Run,Time_ASM,Time_C\n");
 
     for (int r = 0; r < runs; r++) {
         clock_t start_time = clock();
@@ -132,10 +149,10 @@ void average_time(int w, int h) {
 
         printf("Run %d: C function execution time = %.6f seconds\n", r + 1, time_taken_c);
 
-        fprintf(file, "%d,%.6f,%.6f\n", r + 1, time_taken_asm, time_taken_c);
+        fprintf(exec_file, "%d,%.6f,%.6f\n", r + 1, time_taken_asm, time_taken_c);
     }
 
-    fclose(file);
+    fclose(exec_file);
     printf("\nExecution times have been written to 'execution_times.csv'.\n");
 
     double average_time_asm = total_time_asm / runs;
@@ -145,6 +162,12 @@ void average_time(int w, int h) {
     printf("Average Assembly execution time: %.6f seconds\n", average_time_asm);
     printf("Average C execution time: %.6f seconds\n", average_time_c);
 
+
+    FILE* avg_exec_file = fopen("avg_execution_times.csv", "a");
+    fprintf(avg_exec_file, "%d,%d,%.6f,%.6f\n", heightT, widthT, average_time_asm, average_time_c);
+    fclose(avg_exec_file); 
+
+    printf("Average runtime has been saved to avg_execution_times.\n");
     for (int i = 0; i < widthT; i++) {
         free(arrayT[i]);
         free(resultArrayT_ASM[i]);
@@ -153,21 +176,22 @@ void average_time(int w, int h) {
     free(arrayT);
     free(resultArrayT_ASM);
     free(resultArrayT_C);
-
 }
+
+
 int main() {
     char ans;
     int width, height;
-    run();
-    printf("\nWould you like to get the average run time for C and x86-64? (Y/N)? "); 
-    scanf_s(" %c", &ans);
-    if (ans == 'Y' || ans == 'y') {
+    //run();
+    //printf("\nWould you like to get the average run time for C and x86-64? (Y/N)? "); 
+    //scanf_s(" %c", &ans);
+    //if (ans == 'Y' || ans == 'y') {
         printf("Input number of width of the image: ");
         scanf_s("%d", &width);
         printf("Input number of height of the image: ");
         scanf_s("%d", &height);
         average_time(width, height);
-    }
+    //}
     return 0;
 
 }

@@ -12,6 +12,5 @@ asmImgCvtGrayDoubleToInt:
 	movsd xmm1, [var1]
 	mulsd xmm0, xmm1
 	cvtsd2si rax, xmm0
-	movsd xmm0, xmm0
 	ret
 	
