@@ -57,6 +57,10 @@ def plot_avg_execution_times(file_path):
         # Combine width and height into a single string for labeling
         data["Dimension"] = data["Width"].astype(str) + "x" + data["Height"].astype(str)
 
+        # Sort the data by the product of Width and Height (increasing order of dimension)
+        data["Dimension_Size"] = data["Width"] * data["Height"]
+        data = data.sort_values("Dimension_Size")
+
         # Create the plot
         fig, ax = plt.subplots(figsize=(10, 6))
         
@@ -76,13 +80,9 @@ def plot_avg_execution_times(file_path):
         # Show the plot
         plt.show()
 
-    except FileNotFoundError:
-        print(f"Error: File '{file_path}' not found.")
-    except pd.errors.EmptyDataError:
-        print(f"Error: File '{file_path}' is empty.")
     except Exception as e:
         print(f"An error occurred: {e}")
     
 if __name__ == "__main__":
-    plot_execution_times("execution_times_10000.csv")
-    #plot_avg_execution_times("avg_execution_times.csv")
+    #plot_execution_times("./DEBUG/execution_times_10000.csv")
+    plot_avg_execution_times("./DEBUG/avg_execution_times.csv")
