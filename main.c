@@ -49,7 +49,7 @@ void run() {
     printf("\n[C] (Results in uint8):\n");
     for (int i = 0; i < height1; i++) {
         for (int j = 0; j < width1; j++) {
-            if (i == 0 && j == 0)
+            if (j == 0)
                 printf("%hhu", resultArrayC[i][j]);
             else
                 printf(", %hhu", resultArrayC[i][j]);
@@ -61,7 +61,7 @@ void run() {
     printf("\n[ASM] (Results in uint8):\n");
     for (int i = 0; i < height1; i++) {
         for (int j = 0; j < width1; j++) {
-            if (i == 0 & j == 0)  printf("%hhu", resultArrayASM[i][j]);
+            if (j == 0)  printf("%hhu", resultArrayASM[i][j]);
             else printf(", %hhu", resultArrayC[i][j]);
 
         }
@@ -182,16 +182,16 @@ void average_time(int w, int h) {
 int main() {
     char ans;
     int width, height;
-    //run();
-    //printf("\nWould you like to get the average run time for C and x86-64? (Y/N)? "); 
-    //scanf_s(" %c", &ans);
-    //if (ans == 'Y' || ans == 'y') {
+    run();
+    printf("\nWould you like to get the average run time for C and x86-64? (Y/N)? "); 
+    scanf_s(" %c", &ans);
+    if (ans == 'Y' || ans == 'y') {
         printf("Input number of width of the image: ");
         scanf_s("%d", &width);
         printf("Input number of height of the image: ");
         scanf_s("%d", &height);
         average_time(width, height);
-    //}
+    }
     return 0;
 
 }
