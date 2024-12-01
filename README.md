@@ -114,13 +114,16 @@ The performance was evaluated across various image dimensions, including the req
 ### **Release Version**
 - **Figure 09:** Release Version `10×10` Execution Times Across 30 Iterations Line Chart
   ![](RELEASE/Screenshots/Released_Version_Execution_Times_10X10.png)
+     - x86 and C show nearly identical performance with negligible differences. 
 - **Figure 10:** Release Version `100×100` Execution Times Across 30 Iterations Line Chart
   ![](RELEASE/Screenshots/Released_Version_Execution_Times_100X100.png)
+     -  x86 begins to outperform C with more consistent and lower execution times, while C shows sharp spikes, indicating higher variability.
 - **Figure 11:** Release Version `1000×1000` Execution Times Across 30 Iterations Line Chart
    ![](RELEASE/Screenshots/Released_Version_Execution_Times_1000X1000.png)
+  -  The difference becomes significant regarding x86 being consistently faster by approximately 9×, averaging ≈0.002 seconds compared to C's ≈0.018 seconds.
 - **Figure 12:** Release Version `10000×10000` Execution Times Across 30 Iterations Line Chart
    ![](RELEASE/Screenshots/Released_Version_Execution_Times_10000X10000.png)
-
+  -  x86 outperforms C with execution times averaging around 0.2 seconds, compared to the C program's consistent 2.0 seconds. This shows that x86 is approximately 10× faster than C given this image dimension.
 ---
 
 ## **Average Execution Time**
