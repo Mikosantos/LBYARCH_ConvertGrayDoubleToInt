@@ -100,12 +100,16 @@ The performance was evaluated across various image dimensions, including the req
 ### **Debug Version**
 - **Figure 04:** Debug Version `10×10` Execution Times Across 30 Iterations Line Chart
  ![](DEBUG/Screenshots/Debug_Version_Execution_Times_10X10.png)
+     -  The x86 function's execution times are consistently low and close to zero across all iterations, making it stable and efficient given this image dimension. However, C has a low run time but with a spike in one iteration, increasing its average excution time, which could be caused by an overhead. 
 - **Figure 06:** Debug Version `100×100` Execution Times Across 30 Iterations Line Chart
  ![](DEBUG/Screenshots/Debug_Version_Execution_Times_100X100.png)
+     -  The x86 function's execution times remain negligible and consistent across all iterations. C execution times are slightly higher than x86's but still stable and predictable. Given this image dimension, both implementations handle the workload well, yet x86 shown more promising result and retains a performance advantage with lower runtime.
 - **Figure 07:** Debug Version `1000×1000` Execution Times Across 30 Iterations Line Chart
    ![](DEBUG/Screenshots/Debug_Version_Execution_Times_1000X1000.png)
+     -  C's run times are noticably higher and show slight fluctuations across iterations. As the workload increases, C's inefficiencies become more apparent.
 - **Figure 08:** Debug Version `10000×10000` Execution Times Across 30 Iterations Line Chart
   ![](DEBUG/Screenshots/Debug_Version_Execution_Times_10000X10000.png)
+     -  For very large image dimensions, x86 clearly outperforms C in terms of execution time. The efficiency of x86 in handling low-level operations becomes evident here, while C struggles with higher overhead.
 
 ### **Release Version**
 - **Figure 09:** Release Version `10×10` Execution Times Across 30 Iterations Line Chart
