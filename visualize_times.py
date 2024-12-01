@@ -59,5 +59,5 @@ def plot_avg_execution_times(file_path):
         print(f"An error occurred: {e}")
     
 if __name__ == "__main__":
-    #plot_execution_times("./DEBUG/execution_times_10000.csv")
-    plot_avg_execution_times("./DEBUG/avg_execution_times.csv")
+    plot_execution_times("./RELEASE/execution_times_10000x10000.csv")
+    #plot_avg_execution_times("./RELEASE/avg_execution_times.csv")

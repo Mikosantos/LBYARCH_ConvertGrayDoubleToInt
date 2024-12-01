@@ -210,16 +210,16 @@ void average_time(int w, int h) {
 int main() {
     char ans;
     int width, height;
-    run();
-    printf("\nWould you like to get the average run time for C and x86-64? (Y/N)? ");
-    scanf_s(" %c", &ans);
-    if (ans == 'Y' || ans == 'y') {
+    //run();
+    //printf("\nWould you like to get the average run time for C and x86-64? (Y/N)? ");
+    //scanf_s(" %c", &ans);
+    //if (ans == 'Y' || ans == 'y') {
         printf("Input width of the image: ");
         scanf_s("%d", &width);
         printf("Input height of the image: ");
         scanf_s("%d", &height);
         average_time(width, height);
-    }
+    //}
     return 0;
 
 }
