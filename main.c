@@ -8,12 +8,35 @@
 extern uint8_t asmImgCvtGrayDoubleToInt(double num);
 void run();
 void average_time(int w, int h);
+void checkerValidation(int widthT, int heightT, uint8_t** resultArrayT_ASM, uint8_t** resultArrayT_C);
 
 uint8_t cImgCvtGrayDoubleToInt(double num) {
     double scaled = num * 255.0;
     int rounded_result = (int)nearbyint(scaled);
     return (uint8_t)rounded_result;
 }
+
+void checkerValidation(int widthT, int heightT, uint8_t** resultArrayT_ASM, uint8_t** resultArrayT_C) {
+    printf("\n\n*******Validation Check*******\n");
+    int mismatches = 0;
+
+    for (int i = 0; i < widthT; i++) {
+        for (int j = 0; j < heightT; j++) {
+            if (resultArrayT_ASM[i][j] != resultArrayT_C[i][j]) {
+                printf("Mismatch at [%d][%d]: ASM = %d, C = %d\n",i, j, resultArrayT_ASM[i][j], resultArrayT_C[i][j]);
+                mismatches++;
+            }
+        }
+    }
+
+    if (mismatches == 0) {
+        printf("Validation successful: All elements match between ASM and C results.\n");
+    }
+    else {
+        printf("Validation failed: %d mismatches found.\n", mismatches);
+    }
+}
+
 
 /************************** TESTING based on specs **********************************/
 void run() {
@@ -81,8 +104,8 @@ void average_time(int w, int h) {
 
     // Allocate memory
     double** arrayT = (double**)malloc(widthT * sizeof(double*));
-    UINT8** resultArrayT_ASM = (UINT8**)malloc(widthT * sizeof(UINT8*));
-    UINT8** resultArrayT_C = (UINT8**)malloc(widthT * sizeof(UINT8*));
+    uint8_t** resultArrayT_ASM = (uint8_t**)malloc(widthT * sizeof(UINT8*));
+    uint8_t** resultArrayT_C = (uint8_t**)malloc(widthT * sizeof(uint8_t*));
 
     if (!arrayT || !resultArrayT_ASM || !resultArrayT_C) {
         perror("Memory allocation failed");
@@ -94,8 +117,8 @@ void average_time(int w, int h) {
 
     for (int i = 0; i < widthT; i++) {
         arrayT[i] = (double*)malloc(heightT * sizeof(double));
-        resultArrayT_ASM[i] = (UINT8*)malloc(heightT * sizeof(UINT8));
-        resultArrayT_C[i] = (UINT8*)malloc(heightT * sizeof(UINT8));
+        resultArrayT_ASM[i] = (uint8_t*)malloc(heightT * sizeof(uint8_t));
+        resultArrayT_C[i] = (uint8_t*)malloc(heightT * sizeof(uint8_t));
 
         if (!arrayT[i] || !resultArrayT_ASM[i] || !resultArrayT_C[i]) {
             perror("Memory allocation failed");
@@ -165,9 +188,12 @@ void average_time(int w, int h) {
 
     FILE* avg_exec_file = fopen("avg_execution_times.csv", "a");
     fprintf(avg_exec_file, "%d,%d,%.6f,%.6f\n", heightT, widthT, average_time_asm, average_time_c);
-    fclose(avg_exec_file); 
+    fclose(avg_exec_file);
 
     printf("Average runtime has been saved to avg_execution_times.\n");
+
+    checkerValidation(widthT, heightT, resultArrayT_ASM, resultArrayT_C);
+
     for (int i = 0; i < widthT; i++) {
         free(arrayT[i]);
         free(resultArrayT_ASM[i]);
@@ -179,16 +205,18 @@ void average_time(int w, int h) {
 }
 
 
+
+
 int main() {
     char ans;
     int width, height;
     run();
-    printf("\nWould you like to get the average run time for C and x86-64? (Y/N)? "); 
+    printf("\nWould you like to get the average run time for C and x86-64? (Y/N)? ");
     scanf_s(" %c", &ans);
     if (ans == 'Y' || ans == 'y') {
-        printf("Input number of width of the image: ");
+        printf("Input width of the image: ");
         scanf_s("%d", &width);
-        printf("Input number of height of the image: ");
+        printf("Input height of the image: ");
         scanf_s("%d", &height);
         average_time(width, height);
     }
