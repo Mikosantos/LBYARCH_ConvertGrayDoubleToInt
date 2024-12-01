@@ -65,8 +65,7 @@ The **Assembly kernel** is implemented in a separate `.asm` file named `asmfuncI
 
 ## **Correctness Check**
 
-Initially, the outputs from the **C** and **x86 programs** were manually verified against the expected values stated in the project specification.  
-
+Initially, the outputs from the **C** and **x86 programs** were verified against the expected values stated in the project specification.  
 ### **Example Input and Output**  
 **Input:**  
 - Height, Width: `3 4`  
@@ -84,9 +83,15 @@ Initially, the outputs from the **C** and **x86 programs** were manually verifie
 217, 242, 38, 84
 ```
 ![](IMG/Correctness.png)
+
+## 
+Further, for input regaridng the random values that is needed for the compuation of execution times, an input validation was applied which comfirms the consistency of the result between C and x86 functions.
+###
+![](DEBUG/Screenshots/Debug_Version_10000X10000_Execution_Times_2.png)
+
 > **Figure 03:** Correctness Check  
 
----
+
 
 ## **Analysis of Data**
 
