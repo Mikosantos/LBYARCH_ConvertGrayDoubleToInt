@@ -85,7 +85,7 @@ Initially, the outputs from the **C** and **x86 programs** were verified against
 ![](IMG/Correctness.png)
 
 ## 
-Further, for input regaridng the random values that is needed for the compuation of execution times, an input validation was applied which comfirms the consistency of the result between C and x86 functions.
+Additionally, input validation was implemented for the random values required to compute execution times. This validation ensures result consistency between the C and x86 functions.
 ###
 ![](DEBUG/Screenshots/Debug_Version_10000X10000_Execution_Times_2.png)
 
